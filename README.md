@@ -2,11 +2,11 @@ Quantile Function
 ===
 [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Coverage Status][codecov-image]][codecov-url] [![Dependencies][dependencies-image]][dependencies-url]
 
-> [Pareto (Type I)](https://en.wikipedia.org/wiki/Pareto (Type I)_distribution) distribution [quantile function](https://en.wikipedia.org/wiki/Quantile_function).
+> [Pareto (Type I)](https://en.wikipedia.org/wiki/Pareto_distribution) distribution [quantile function](https://en.wikipedia.org/wiki/Quantile_function).
 
-The [quantile function](https://en.wikipedia.org/wiki/Quantile_function) for a [Pareto (Type I)](https://en.wikipedia.org/wiki/Pareto (Type I)_distribution) random variable is
+The [quantile function](https://en.wikipedia.org/wiki/Quantile_function) for a [Pareto (Type I)](https://en.wikipedia.org/wiki/Pareto_distribution) random variable is
 
-<div class="equation" align="center" data-raw-text="" data-equation="eq:quantile_function">
+<div class="equation" align="center" data-raw-text="Q(p) = \beta \left( 1 - p \right)^{- 1 / \alpha }" data-equation="eq:quantile_function">
 	<img src="" alt="Quantile function for a Pareto (Type I) distribution.">
 	<br>
 </div>
@@ -30,7 +30,7 @@ var quantile = require( 'distributions-pareto-type1-quantile' );
 
 #### quantile( p[, options] )
 
-Evaluates the [quantile function](https://en.wikipedia.org/wiki/Quantile_function) for the [Pareto (Type I)](https://en.wikipedia.org/wiki/Pareto (Type I)_distribution) distribution. `p` may be either a [`number`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number) between `0` and `1`, an [`array`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array), a [`typed array`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Typed_arrays), or a [`matrix`](https://github.com/dstructs/matrix).
+Evaluates the [Pareto (Type I)](https://en.wikipedia.org/wiki/Pareto_distribution) distribution. `p` may be either a [`number`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number) between `0` and `1`, an [`array`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array), a [`typed array`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Typed_arrays), or a [`matrix`](https://github.com/dstructs/matrix).
 
 ``` javascript
 var matrix = require( 'dstructs-matrix' ),
@@ -40,15 +40,15 @@ var matrix = require( 'dstructs-matrix' ),
 	i;
 
 out = quantile( 0.25 );
-// returns
+// returns ~1.333
 
 x = [ 0, 0.2, 0.4, 0.6, 0.8, 1 ];
 out = quantile( x );
-// returns [...]
+// returns [ 1, 1.25, ~1.667, 2.5, 5, Infinity ]
 
 x = new Float32Array( x );
 out = quantile( x );
-// returns Float64Array( [...] )
+// returns Float64Array( [1,1.25,~1.667,2.5,5,Infinity] )
 
 x = new Float32Array( 6 );
 for ( i = 0; i < 6; i++ ) {
@@ -63,10 +63,11 @@ mat = matrix( x, [3,2], 'float32' );
 
 out = quantile( mat );
 /*
-	[
-
-	   ]
+	[ 1    1.2
+	  1.5  2
+	  3    6 ]
 */
+
 ```
 
 The function accepts the following `options`:
@@ -79,7 +80,7 @@ The function accepts the following `options`:
 *	__path__: [deepget](https://github.com/kgryte/utils-deep-get)/[deepset](https://github.com/kgryte/utils-deep-set) key path.
 *	__sep__: [deepget](https://github.com/kgryte/utils-deep-get)/[deepset](https://github.com/kgryte/utils-deep-set) key path separator. Default: `'.'`.
 
-A [Pareto (Type I)](https://en.wikipedia.org/wiki/Pareto (Type I)_distribution) distribution is a function of 2 parameter(s): `alpha`(shape parameter) and `beta`(scale parameter). By default, `alpha` is equal to `1` and `beta` is equal to `1`. To adjust either parameter, set the corresponding option(s).
+A [Pareto (Type I)](https://en.wikipedia.org/wiki/Pareto_distribution) distribution is a function of two parameters: `alpha > 0`(shape parameter) and `beta > 0`(scale parameter). By default, `alpha` is equal to `1` and `beta` is equal to `1`. To adjust either parameter, set the corresponding option.
 
 ``` javascript
 var x = [ 0, 0.2, 0.4, 0.6, 0.8, 1 ];
@@ -88,7 +89,8 @@ var out = quantile( x, {
 	'alpha': 1,
 	'beta': 5
 });
-// returns [...]
+// returns [ 5, 6.25, ~8.333, 12.5, 25, Infinity ]
+
 ```
 
 For non-numeric `arrays`, provide an accessor `function` for accessing `array` values.
@@ -110,7 +112,8 @@ function getValue( d, i ) {
 var out = quantile( data, {
 	'accessor': getValue
 });
-// returns [...]
+// returns [ 1, 1.25, ~1.667, 2.5, 5, Infinity ]
+
 ```
 
 
@@ -132,12 +135,12 @@ var out = quantile( data, {
 });
 /*
 	[
-		{'x':[0,]},
-		{'x':[1,]},
-		{'x':[2,]},
-		{'x':[3,]},
-		{'x':[4,]},
-		{'x':[5,]}
+		{'x':[0,1]},
+		{'x':[1,1.25]},
+		{'x':[2,~1.667]},
+		{'x':[3,2.5]},
+		{'x':[4,5]},
+		{'x':[5,Infinity]}
 	]
 */
 
@@ -155,13 +158,14 @@ x = new Float32Array( [0.2,0.4,0.6,0.8] );
 out = quantile( x, {
 	'dtype': 'int32'
 });
-// returns Int32Array( [...] )
+// returns Int32Array( [1,1,2,5] )
 
 // Works for plain arrays, as well...
 out = quantile( [0.2,0.4,0.6,0.8], {
 	'dtype': 'uint8'
 });
-// returns Uint8Array( [...] )
+// returns Uint8Array( [1,1,2,5] )
+
 ```
 
 By default, the function returns a new data structure. To mutate the input data structure (e.g., when input values can be discarded or when optimizing memory usage), set the `copy` option to `false`.
@@ -178,7 +182,7 @@ x = [ 0, 0.2, 0.4, 0.6, 0.8, 1 ];
 out = quantile( x, {
 	'copy': false
 });
-// returns [...]
+// returns [ 1, 1.25, ~1.667, 2.5, 5, Infinity ]
 
 bool = ( x === out );
 // returns true
@@ -198,9 +202,9 @@ out = quantile( mat, {
 	'copy': false
 });
 /*
-	[
-
-	   ]
+	[ 1    1.2
+	  1.5  2
+	  3    6 ]
 */
 
 bool = ( mat === out );
@@ -389,8 +393,8 @@ Copyright &copy; 2015. The [Compute.io](https://github.com/compute-io) Authors.
 [travis-image]: http://img.shields.io/travis/distributions-io/pareto-type1-quantile/master.svg
 [travis-url]: https://travis-ci.org/distributions-io/pareto-type1-quantile
 
-[codecov-image]: https://img.shields.io/codecov/github/distributions-io/pareto-type1-quantile/master.svg
-[codecov-url]: https://coveralls.io/github/distributions-io/pareto-type1-quantile?branch=master
+[codecov-image]: https://img.shields.io/codecov/c/github/distributions-io/pareto-type1-quantile/master.svg
+[codecov-url]: https://codecov.io/github/distributions-io/pareto-type1-quantile?branch=master
 
 [dependencies-image]: http://img.shields.io/david/distributions-io/pareto-type1-quantile.svg
 [dependencies-url]: https://david-dm.org/distributions-io/pareto-type1-quantile
