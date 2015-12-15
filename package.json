@@ -20,19 +20,26 @@
   "main": "./lib",
   "repository": {
     "type": "git",
-    "url": "git://github.com/compute-io/pareto-type1-quantile.git"
+    "url": "git://github.com/distributions-io/pareto-type1-quantile.git"
   },
   "keywords": [
     "distributions.io",
     "distributions",
+    "distribution",
+    "continuous",
     "probability",
     "statistics",
     "stats",
     "cdf",
-    "inverse"
+    "inverse",
+    "extreme value",
+    "tail",
+    "risk",
+    "economics",
+    "finance"
   ],
   "bugs": {
-    "url": "https://github.com/compute-io/pareto-type1-quantile/issues"
+    "url": "https://github.com/distributions-io/pareto-type1-quantile/issues"
   },
   "dependencies": {
     "compute-array-constructors": "^1.0.0",
