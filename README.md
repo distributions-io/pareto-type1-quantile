@@ -7,7 +7,7 @@ Quantile Function
 The [quantile function](https://en.wikipedia.org/wiki/Quantile_function) for a [Pareto (Type I)](https://en.wikipedia.org/wiki/Pareto_distribution) random variable is
 
 <div class="equation" align="center" data-raw-text="Q(p) = \beta \left( 1 - p \right)^{- 1 / \alpha }" data-equation="eq:quantile_function">
-	<img src="" alt="Quantile function for a Pareto (Type I) distribution.">
+	<img src="https://cdn.rawgit.com/distributions-io/pareto-type1-quantile/444cda60f64f2da577f74acf62c9da41715fd9d2/docs/img/eqn.svg" alt="Quantile function for a Pareto (Type I) distribution.">
 	<br>
 </div>
 
