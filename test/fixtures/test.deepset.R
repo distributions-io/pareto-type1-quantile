@@ -1,11 +1,11 @@
 options( digits = 16 )
 library( jsonlite )
+library( VGAM )
 
-
-alpha = 1
-beta = 1
-probs = seq( 0, 1, 0.01 )
-y = qparetoI( probs, alpha, beta )
+alpha = 3
+beta = 2
+probs = seq( 0.1, 1, 0.01 )
+y = qparetoI( probs, beta, alpha )
 
 cat( y, sep = ",\n" )
 
